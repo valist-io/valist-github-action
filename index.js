@@ -1,7 +1,7 @@
 const path = require('path');
 const { spawn } = require('child_process');
 
-const cmd = spawn(`bash -c ${path.join(__dirname, '/bin/valist')} publish --dryrun` , { shell: true });
+const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish --dryrun"` , { shell: true });
 cmd.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
 });
