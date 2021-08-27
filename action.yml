@@ -3,11 +3,5 @@ description: 'Publish a release on valist'
 runs:
   using: 'composite'
   steps:
-    - run: ls -al /run/act/actions/valist-io-valist-github-action@main/bin/
-      shell: bash
-    - run: chown root:root /run/act/actions/valist-io-valist-github-action@main/bin/valist
-      shell: bash
-    - run: chmod +x /run/act/actions/valist-io-valist-github-action@main/bin/valist
-      shell: bash
-    - run: bash -c /run/act/actions/valist-io-valist-github-action@main/bin/valist publish --dryrun
+    - run: bash -c "/run/act/actions/valist-io-valist-github-action@main/bin/valist publish --dryrun"
       shell: bash
