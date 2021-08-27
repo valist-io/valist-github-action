@@ -1,7 +1,7 @@
 const path = require('path');
 const { spawn } = require('child_process');
 
-const ls = spawn('ls ' + __dirname + '/bin', { shell: true });
+const ls = spawn('ls ' + __dirname + '/bin', ['-alt'], { shell: true });
 ls.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
 });
