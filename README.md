@@ -6,7 +6,7 @@ A github action for publishing releases on Valist.
 
 We welcome pull requests and would love to support our early contributors with some awesome perks!
 
-Found a bug or have an idea for a feature? [Create an issue](https://github.com/valist-io/registry/issues/new).
+Found a bug or have an idea for a feature? [Create an issue](https://github.com/valist-io/valist-github-action/issues/new).
 
 ## Maintainers
 
