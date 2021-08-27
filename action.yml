@@ -1,6 +1,7 @@
-# action.yml
 name: 'Valist Publish'
 description: 'Publish a release on valist'
 runs:
-  using: 'node12'
-  main: 'index.js'
+  using: 'composite'
+  steps:
+    - run: ./bin/valist publish --dryrun
+      shell: bash
