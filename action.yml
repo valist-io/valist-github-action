@@ -1,4 +1,4 @@
-name: 'Valist Publish'
+name: 'Valist'
 description: 'Publish a release on valist'
 runs:
   using: 'node12'
