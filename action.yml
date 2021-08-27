@@ -1,11 +1,5 @@
 name: 'Valist Publish'
 description: 'Publish a release on valist'
 runs:
-  using: 'composite'
-  steps:
-    - run: ls
-      shell: bash
-    - run: chmod +x ./bin/valist
-      shell: bash
-    - run: valist publish --dryrun
-      shell: bash
+  using: 'node12'
+  main: 'index.js'

@@ -1,14 +1,8 @@
+const path = require('path');
 const { spawn } = require('child_process');
-const cpCmd = spawn('ls', ['-alt'], { shell: true });
-cpCmd.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
 
-cpCmd.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`);
-});
-
-const cmd = spawn('./bin/valist', { shell: true });
+console.log("Current folder", __dirname);
+const cmd = spawn('.//' + path.join(__dirname, '/bin/valist'), { shell: true });
 cmd.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
 });
