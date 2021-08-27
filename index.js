@@ -6,4 +6,4 @@ const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish --dry
 cmd.stdout.on('data', (data) => console.log(`${data}`));
 cmd.stderr.on('data', (data) => console.log(`${data}`));
 
-cmd.on('close', (code) => console.log(`child process exited with code ${code}`));
+cmd.on('close', (code) => code !== 0 && console.log(`child process exited with code ${code}`));
