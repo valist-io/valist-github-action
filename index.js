@@ -1,6 +1,14 @@
 const { spawn } = require('child_process');
-const cmd = spawn('./bin/valist');
+const cpCmd = spawn('chmod', '+x', "./bin/valist");
+cpCmd.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+});
 
+cpCmd.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`);
+});
+
+const cmd = spawn('./bin/valist');
 cmd.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
 });
