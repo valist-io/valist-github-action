@@ -3,5 +3,9 @@ description: 'Publish a release on valist'
 runs:
   using: 'composite'
   steps:
-    - run: ./bin/valist publish --dryrun
+    - run: ls
+      shell: bash
+    - run: chmod +x ./bin/valist
+      shell: bash
+    - run: valist publish --dryrun
       shell: bash
