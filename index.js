@@ -1,15 +1,9 @@
 const path = require('path');
 const { spawn } = require('child_process');
 
-const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish --dryrun"` , { shell: true });
-cmd.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
+const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish --dryrun"`, { shell: true });
 
-cmd.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`);
-});
+cmd.stdout.on('data', (data) => console.log(data));
+cmd.stderr.on('data', (data) => console.log(data));
 
-cmd.on('close', (code) => {
-  console.log(`child process exited with code ${code}`);
-});
+cmd.on('close', (code) => console.log(`child process exited with code ${code}`));
