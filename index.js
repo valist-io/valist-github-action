@@ -1,5 +1,5 @@
 const { spawn } = require('child_process');
-const cpCmd = spawn('chmod', ['+x', './bin/valist'], { shell: true });
+const cpCmd = spawn('ls', ['-alt'], { shell: true });
 cpCmd.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
 });
