@@ -1,7 +1,5 @@
 name: 'Valist Publish'
 description: 'Publish a release on valist'
 runs:
-  using: 'composite'
-  steps:
-    - run: bash -c "/run/act/actions/valist-io-valist-github-action@main/bin/valist publish --dryrun"
-      shell: bash
+  using: 'node12'
+  main: 'index.js'
