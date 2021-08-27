@@ -1,7 +1,7 @@
 const path = require('path');
 const { spawn } = require('child_process');
 
-const ls = spawn('ls ' + __dirname, { shell: true });
+const ls = spawn('ls ' + __dirname + '/bin', { shell: true });
 ls.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
 });
@@ -28,7 +28,7 @@ chmod.on('close', (code) => {
 });
 
 console.log("Current folder", __dirname);
-const cmd = spawn('.' + path.join(__dirname, '/bin/valist'), { shell: true });
+const cmd = spawn('./' + path.join(__dirname, '/bin/valist'), { shell: true });
 cmd.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
 });
