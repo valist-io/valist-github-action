@@ -1,13 +1,38 @@
 const path = require('path');
 const { spawn } = require('child_process');
 
-// Matches
-// Git-commit 1838916563507ca86405061734ca03840fcfee8c 
-// SHA256 a5b1b7312daf0725eac0df2aa08cfa46ac333117f09b376625e43e20e6dd81f7
-// CIDv1 bafybeifrh4cvvrkpyhwsueifw4rapnm7xqn6jyckk4wwy2ot3mifczdzwm
-const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish --dryrun"`, { shell: true });
+const valist = require('@valist/cli');
 
-cmd.stdout.on('data', (data) => process.stdout.write(`${data}`));
-cmd.stderr.on('data', (data) => process.stdout.write(`${data}`));
+async function fetchArtifact() {
+  const fetchCmd = spawn(`node ${path.join(__dirname, 'node_modules/@valist/cli/dist/index.js')}`, { shell: true });
+  fetchCmd.stdout.on('data', (data) => process.stdout.write(`${data}`));
+  fetchCmd.stderr.on('data', (data) => process.stdout.write(`${data}`));
 
-cmd.on('close', (code) => code !== 0 && console.log(`child process exited with code ${code}`));
+  return new Promise((resolve, reject) => {
+    fetchCmd.on('close', resolve);
+    fetchCmd.on('error', reject);
+  });
+}
+
+async function markExecutable() {
+  const cmd = spawn(`chmod +x  ${path.join(__dirname, 'node_modules/@valist/cli/bin/valist')}`, { shell: true });
+  cmd.stdout.on('data', (data) => process.stdout.write(`${data}`));
+  cmd.stderr.on('data', (data) => process.stdout.write(`${data}`));
+  return new Promise((resolve, reject) => {
+    cmd.on('close', resolve);
+    cmd.on('error', reject);
+  });
+}
+
+function publish() {
+  const cmd = spawn(`bash -c "${path.join(__dirname, 'node_modules/@valist/cli/bin/valist')} publish --dryrun"`, { shell: true });
+  cmd.stdout.on('data', (data) => process.stdout.write(`${data}`));
+  cmd.stderr.on('data', (data) => process.stdout.write(`${data}`));
+  cmd.on('close', (code) => code !== 0 && console.log(`child process exited with code ${code}`));
+}
+
+(async() => {
+  await fetchArtifact()
+  await markExecutable()
+  publish()
+})();
