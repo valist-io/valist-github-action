@@ -1,0 +1,22 @@
+{
+  "name": "valist-github-action",
+  "description": "A github action for publishing releases on Valist.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valist-io/valist-github-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/valist-io/valist-github-action/issues"
+  },
+  "homepage": "https://github.com/valist-io/valist-github-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.6.0"
+  }
+}
