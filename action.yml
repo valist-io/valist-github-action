@@ -1,5 +1,10 @@
 name: 'Valist'
 description: 'Publish a release on valist'
+inputs:
+  working-directory:
+    description: Working directory
+    required: false
+    default: ''
 runs:
   using: 'node12'
   main: 'index.js'
