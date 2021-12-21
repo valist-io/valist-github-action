@@ -2,10 +2,10 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 // Matches
-// Git-commit 1838916563507ca86405061734ca03840fcfee8c 
-// SHA256 a5b1b7312daf0725eac0df2aa08cfa46ac333117f09b376625e43e20e6dd81f7
-// CIDv1 bafybeifrh4cvvrkpyhwsueifw4rapnm7xqn6jyckk4wwy2ot3mifczdzwm
-const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish --dryrun"`, { shell: true });
+// Git-commit 43be018847b32288cc3c8fef982585919a56de44 
+// SHA256 9183eee79b6a7711dad7a2946ee57b25d45fe3d84a3236fea1295da32e065da4
+// CIDv1 bafybeicfvgamh3po4nh3grndyjcigop6afflmkgzcdk5fz3udjlzbadfz4
+const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish"`, { shell: true });
 
 cmd.stdout.on('data', (data) => process.stdout.write(`${data}`));
 cmd.stderr.on('data', (data) => process.stdout.write(`${data}`));
