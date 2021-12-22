@@ -9,7 +9,7 @@ const options = {
 
 // Matches
 // Git-commit c482d11eaa9f4bb945cb586a5bef0647e0830fe7 
-// SHA256 d18ed36671b8618520016c81125aa889a5b800872038c5e009ef49cd305088cd
+// SHA256 1850b9e58ae31365b1ef0bc72c1d71eed6fbf5330350cb65eb825c3356274448
 // CIDv1 bafybeiaznetvic2b5u7h2xqcaewoouuydjabdzllp3ndac7dnysrwqjab4
 const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish"`, options);
 
