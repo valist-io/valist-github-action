@@ -8,9 +8,9 @@ const options = {
 };
 
 // Matches
-// Git-commit 43be018847b32288cc3c8fef982585919a56de44 
-// SHA256 9183eee79b6a7711dad7a2946ee57b25d45fe3d84a3236fea1295da32e065da4
-// CIDv1 bafybeicfvgamh3po4nh3grndyjcigop6afflmkgzcdk5fz3udjlzbadfz4
+// Git-commit c482d11eaa9f4bb945cb586a5bef0647e0830fe7 
+// SHA256 d18ed36671b8618520016c81125aa889a5b800872038c5e009ef49cd305088cd
+// CIDv1 bafybeiaznetvic2b5u7h2xqcaewoouuydjabdzllp3ndac7dnysrwqjab4
 const cmd = spawn(`bash -c "${path.join(__dirname, '/bin/valist')} publish"`, options);
 
 cmd.stdout.on('data', (data) => process.stdout.write(`${data}`));
