@@ -1,10 +1,24 @@
-name: 'Valist'
-description: 'Publish a release on valist'
+name: 'Valist Action'
+description: 'GitHub Action for publishing to Valist'
+author: 'valist-io'
+branding:
+  icon: 'package'
+  color: 'purple'
+
 inputs:
-  working-directory:
-    description: Working directory
-    required: false
-    default: ''
+  team:
+    description: 'Valist team name'
+    required: true
+  project:
+    description: 'Valist project name'
+    required: true
+  release:
+    description: 'Valist release name'
+    required: true
+  files:
+    description: 'Files to publish'
+    required: true
+
 runs:
-  using: 'node12'
+  using: 'node14'
   main: 'index.js'

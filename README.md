@@ -1,29 +1,6 @@
 # Valist Github Action
 
-A github action for publishing releases on Valist.
-
-## Examples
-
-There are several examples in the CI/CD section of the [Valist example projects](https://github.com/valist-io/example-projects). Here is the basic workflow to get you started:
-
-```yaml
-name: Valist publish
-on:
-  push:
-    branches: ['main'] # Event triggers on pushes to main
-
-jobs:
-  Valist: # Define deploy job
-    runs-on: ubuntu-latest # OS used for virtual machine
-
-    steps:
-      - uses: actions/checkout@v2 # Make source code of repo available
-      
-      - name: Valist publish
-        uses: valist-io/valist-github-action@main # Execute valist build & publish
-        env:
-          VALIST_SIGNER: ${{ secrets.VALIST_SIGNER }}
-```
+GitHub action for publishing releases on Valist.
 
 ## Contributing
 
