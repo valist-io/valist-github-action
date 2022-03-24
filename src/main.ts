@@ -12,8 +12,8 @@ async function run(): Promise<void> {
 		const privateKey = core.getInput('private-key', { required: true });
 
 		const provider = new ethers.providers.JsonRpcProvider('https://rpc.valist.io');
-		//const wallet = new ethers.Wallet(privateKey); TODO
-		const valist = createClient(provider);
+		const signer = new ethers.Wallet(privateKey, provider);
+		const valist = createClient(provider, signer);
 
 		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
 		const globber = await glob.create(files, { followSymbolicLinks });

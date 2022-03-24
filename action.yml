@@ -6,6 +6,12 @@ branding:
   color: 'purple'
 
 inputs:
+  image:
+    description: 'Release image URI'
+    required: false
+  description:
+    description: 'Release description'
+    required: false
   team:
     description: 'Valist team name'
     required: true
@@ -21,6 +27,9 @@ inputs:
   follow-symbolic-links:
     description: 'Follow symbolic links'
     default: true
+  private-key:
+    description: 'Account private key'
+    required: true
 
 runs:
   using: 'node14'
