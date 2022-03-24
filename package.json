@@ -1,9 +1,9 @@
 {
   "name": "valist-github-action",
   "description": "GitHub Action for publishing to Valist",
-  "main": "lib/main.js",
+  "main": "src/main.ts",
   "scripts": {
-    "build": "tsc && ncc build"
+    "build": "ncc build"
   },
   "repository": {
     "type": "git",
@@ -17,9 +17,12 @@
   },
   "homepage": "https://github.com/valist-io/valist-github-action#readme",
   "dependencies": {
-    "@actions/core": "^1.6.0"
+    "@actions/core": "^1.6.0",
+    "@actions/glob": "^0.2.1",
+    "ethers": "^5.6.1"
   },
   "devDependencies": {
+    "@types/node": "^17.0.23",
     "@vercel/ncc": "^0.33.3",
     "typescript": "^4.6.2"
   }

@@ -18,6 +18,9 @@ inputs:
   files:
     description: 'Files to publish'
     required: true
+  follow-symbolic-links:
+    description: 'Follow symbolic links'
+    default: true
 
 runs:
   using: 'node14'
