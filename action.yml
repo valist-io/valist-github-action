@@ -6,14 +6,11 @@ branding:
   color: 'purple'
 
 inputs:
-  image:
-    description: 'Release image URI'
-    required: false
-  description:
-    description: 'Release description'
-    required: false
-  team:
-    description: 'Valist team name'
+  private-key:
+    description: 'Account private key'
+    required: true
+  account:
+    description: 'Valist account name'
     required: true
   project:
     description: 'Valist project name'
@@ -27,10 +24,13 @@ inputs:
   follow-symbolic-links:
     description: 'Follow symbolic links'
     default: true
-  private-key:
-    description: 'Account private key'
-    required: true
+  image:
+    description: 'Release image URI'
+    required: false
+  description:
+    description: 'Release description'
+    required: false
 
 runs:
-  using: 'node14'
-  main: 'index.js'
+  using: 'node16'
+  main: 'dist/index.js'

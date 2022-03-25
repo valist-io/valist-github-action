@@ -5,7 +5,7 @@ import { createClient, ReleaseMeta } from '../../valist-meta/valist-js/packages/
 
 async function run(): Promise<void> {
 	try {
-		const teamName = core.getInput('team', { required: true });
+		const accountName = core.getInput('account', { required: true });
 		const projectName = core.getInput('project', { required: true });
 		const releaseName = core.getInput('release', { required: true });
 		const files = core.getInput('files', { required: true });
@@ -17,7 +17,10 @@ async function run(): Promise<void> {
 
 		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
 		const globber = await glob.create(files, { followSymbolicLinks });
+
+		core.info('uploading files...');
 		const metaURI = await valist.writeFolder(globber.globGenerator());
+		core.info(`release URI ${metaURI}`);
 		
 		const release = new ReleaseMeta();
 		release.name = releaseName;
@@ -25,7 +28,9 @@ async function run(): Promise<void> {
 		release.image = core.getInput('image');
 		release.description = core.getInput('description');
 
-		const tx = await valist.createRelease(teamName, projectName, releaseName, release);
+		core.info('publishing release...');
+		const tx = await valist.createRelease(accountName, projectName, releaseName, release);
+		core.info(`transaction hash ${tx.hash}`);
 		tx.wait();
 	} catch (err: any) {
 		core.setFailed(err.message);
