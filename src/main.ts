@@ -45,6 +45,9 @@ async function * globFiles(patterns: string, followSymbolicLinks: boolean) {
 	    const stat = await fs.promises.stat(source);
 	    const content = stat.isFile() ? fs.createReadStream(source) : undefined;
 
+	    if (path === '' && content === undefined) continue;
+	    core.info(`uploading ${path}`);
+
 	    yield {
 	      path: path,
 	      content: content,
