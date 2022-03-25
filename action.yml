@@ -1,10 +1,36 @@
-name: 'Valist'
-description: 'Publish a release on valist'
+name: 'Valist Action'
+description: 'GitHub Action for publishing to Valist'
+author: 'valist-io'
+branding:
+  icon: 'package'
+  color: 'purple'
+
 inputs:
-  working-directory:
-    description: Working directory
+  private-key:
+    description: 'Account private key'
+    required: true
+  account:
+    description: 'Valist account name'
+    required: true
+  project:
+    description: 'Valist project name'
+    required: true
+  release:
+    description: 'Valist release name'
+    required: true
+  files:
+    description: 'Files to publish'
+    required: true
+  follow-symbolic-links:
+    description: 'Follow symbolic links'
+    default: true
+  image:
+    description: 'Release image URI'
     required: false
-    default: ''
+  description:
+    description: 'Release description'
+    required: false
+
 runs:
-  using: 'node12'
-  main: 'index.js'
+  using: 'node16'
+  main: 'dist/index.js'

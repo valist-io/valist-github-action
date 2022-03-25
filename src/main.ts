@@ -1,0 +1,40 @@
+import * as core from '@actions/core';
+import * as glob from '@actions/glob';
+import { ethers } from 'ethers';
+import { createClient, ReleaseMeta } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
+
+async function run(): Promise<void> {
+	try {
+		const accountName = core.getInput('account', { required: true });
+		const projectName = core.getInput('project', { required: true });
+		const releaseName = core.getInput('release', { required: true });
+		const files = core.getInput('files', { required: true });
+		const privateKey = core.getInput('private-key', { required: true });
+
+		const provider = new ethers.providers.JsonRpcProvider('https://rpc.valist.io');
+		const signer = new ethers.Wallet(privateKey, provider);
+		const valist = createClient(provider, signer);
+
+		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
+		const globber = await glob.create(files, { followSymbolicLinks });
+
+		core.info('uploading files...');
+		const metaURI = await valist.writeFolder(globber.globGenerator());
+		core.info(`release URI ${metaURI}`);
+		
+		const release = new ReleaseMeta();
+		release.name = releaseName;
+		release.external_url = metaURI;
+		release.image = core.getInput('image');
+		release.description = core.getInput('description');
+
+		core.info('publishing release...');
+		const tx = await valist.createRelease(accountName, projectName, releaseName, release);
+		core.info(`transaction hash ${tx.hash}`);
+		tx.wait();
+	} catch (err: any) {
+		core.setFailed(err.message);
+	}
+}
+
+run();
