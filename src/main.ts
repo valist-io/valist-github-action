@@ -1,7 +1,8 @@
 import * as core from '@actions/core';
+import * as glob from '@actions/glob';
+import * as fs from 'fs';
 import { ethers } from 'ethers';
 import { createClient, ReleaseMeta } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
-import { globFiles } from './utils';
 
 async function run(): Promise<void> {
 	try {
@@ -9,13 +10,12 @@ async function run(): Promise<void> {
 		const projectName = core.getInput('project', { required: true });
 		const releaseName = core.getInput('release', { required: true });
 		const privateKey = core.getInput('private-key', { required: true });
+		const files = core.getInput('files', { required: true });
+		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
 
 		const provider = new ethers.providers.JsonRpcProvider('https://rpc.valist.io');
 		const signer = new ethers.Wallet(privateKey, provider);
 		const valist = createClient(provider, signer);
-
-		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
-		const files = core.getInput('files', { required: true });
 
 		core.info('uploading files...');
 		const metaURI = await valist.writeFolder(globFiles(files, followSymbolicLinks));
@@ -32,7 +32,25 @@ async function run(): Promise<void> {
 		core.info(`transaction hash ${tx.hash}`);
 		tx.wait();
 	} catch (err: any) {
-		core.setFailed(err.message);
+		core.setFailed(`${err}`);
+	}
+}
+
+async function * globFiles(patterns: string, followSymbolicLinks: boolean) {
+	const cwd = process.cwd();
+	const globber = await glob.create(patterns, { followSymbolicLinks });
+
+	for await (const source of globber.globGenerator()) {
+		const path = source.replace(cwd, '').replace(/\\/g, '/');
+	    const stat = await fs.promises.stat(source);
+	    const content = stat.isFile() ? fs.createReadStream(source) : undefined;
+
+	    yield {
+	      path: path,
+	      content: content,
+	      mode: stat.mode,
+	      mtime: stat.mtime,
+	    }
 	}
 }
 
