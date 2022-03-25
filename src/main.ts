@@ -1,8 +1,7 @@
 import * as core from '@actions/core';
-import * as glob from '@actions/glob';
-import * as fs from 'fs';
 import { ethers } from 'ethers';
 import { createClient, ReleaseMeta } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
+import { globFiles } from './utils';
 
 async function run(): Promise<void> {
 	try {
@@ -34,24 +33,6 @@ async function run(): Promise<void> {
 		tx.wait();
 	} catch (err: any) {
 		core.setFailed(err.message);
-	}
-}
-
-async function * globFiles(files: string, followSymbolicLinks: boolean) {
-	const globber = await glob.create(files, { followSymbolicLinks });
-
-	for await (const path of globber.globGenerator()) {
-	    const stat = await fs.promises.stat(path);
-	    const content = stat.isFile() 
-	    	? fs.createReadStream(path) 
-	    	: undefined;
-
-	    yield {
-	      path: path,
-	      content: content,
-	      mode: stat.mode,
-	      mtime: stat.mtime,
-	    }
 	}
 }
 
