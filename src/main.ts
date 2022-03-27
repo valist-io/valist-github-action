@@ -1,8 +1,7 @@
 import * as core from '@actions/core';
 import * as glob from '@actions/glob';
 import * as fs from 'fs';
-import HDWalletProvider from '@truffle/hdwallet-provider';
-import { Client, ReleaseMeta, BiconomyProvider } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
+import { Client, ReleaseMeta, GitHubActionProvider } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
 
 async function run(): Promise<void> {
 	try {
@@ -13,11 +12,7 @@ async function run(): Promise<void> {
 		const files = core.getInput('files', { required: true });
 		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
 
-		const web3 = new HDWalletProvider({
-		  privateKeys: [privateKey],
-		  providerOrUrl: "https://rpc.valist.io",
-		});
-		const provider = new BiconomyProvider(web3);
+		const provider = new GitHubActionProvider(privateKey);
 		const valist = new Client(provider);
 
 		core.info('uploading files...');
