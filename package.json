@@ -1,9 +1,9 @@
 {
   "name": "valist-github-action",
   "description": "GitHub Action for publishing to Valist",
-  "main": "src/main.ts",
+  "main": "lib/main.js",
   "scripts": {
-    "build": "ncc build -m -d"
+    "build": "tsc && ncc build"
   },
   "repository": {
     "type": "git",
