@@ -15,11 +15,7 @@ async function run(): Promise<void> {
 		const files = core.getInput('files', { required: true });
 		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
 
-		const web3 = Web3HttpProvider('https://rpc.valist.io/mumbai');
-
-		core.info(Web3HttpProvider);
-		core.info(web3);
-
+		const web3 = new Web3HttpProvider('https://rpc.valist.io/mumbai');
 		const wallet = new ethers.Wallet(privateKey);
 		const client = await createClient(web3, wallet);
 
