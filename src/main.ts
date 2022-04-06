@@ -2,8 +2,9 @@ import * as core from '@actions/core';
 import * as glob from '@actions/glob';
 import * as fs from 'fs';
 import { ethers } from 'ethers';
-// import { HttpProvider } from 'web3-providers-http';
 import { createClient, ReleaseMeta, generateID } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
+
+const Web3HttpProvider = require('web3-providers-http');
 
 async function run(): Promise<void> {
 	try {
@@ -14,8 +15,11 @@ async function run(): Promise<void> {
 		const files = core.getInput('files', { required: true });
 		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
 
-		const Web3HttpProvider = require('web3-providers-http');
 		const web3 = Web3HttpProvider('https://rpc.valist.io/mumbai');
+
+		core.info(Web3HttpProvider);
+		core.info(web3);
+
 		const wallet = new ethers.Wallet(privateKey);
 		const client = await createClient(web3, wallet);
 
