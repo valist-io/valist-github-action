@@ -3,7 +3,7 @@
   "description": "GitHub Action for publishing to Valist",
   "main": "src/main.ts",
   "scripts": {
-    "build": "ncc build -m"
+    "build": "ncc build -m -d"
   },
   "repository": {
     "type": "git",
