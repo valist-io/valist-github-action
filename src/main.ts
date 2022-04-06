@@ -1,8 +1,9 @@
 import * as core from '@actions/core';
 import * as glob from '@actions/glob';
 import * as fs from 'fs';
-import HDWalletProvider from '@truffle/hdwallet-provider';
-import { Client, ReleaseMeta, BiconomyProvider } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
+import { ethers } from 'ethers';
+import { HttpProvider } from 'web3-providers-http';
+import { createClient, ReleaseMeta, generateID } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
 
 async function run(): Promise<void> {
 	try {
@@ -13,16 +14,15 @@ async function run(): Promise<void> {
 		const files = core.getInput('files', { required: true });
 		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
 
-		// const provider = new GitHubActionProvider(privateKey);
-		const wallet = new HDWalletProvider({
-			privateKeys: [privateKey],
-			providerOrUrl: "https://rpc.valist.io",
-		});
-		const provider = new BiconomyProvider(wallet);
-		const valist = new Client(provider);
+		const web3 = new HttpProvider('https://rpc.valist.io/mumbai');
+		const wallet = new ethers.Wallet(privateKey);
+		const client = await createClient(web3, wallet);
+
+		const accountID = generateID(80001, accountName);
+		const projectID = generateID(accountID, projectName);
 
 		core.info('uploading files...');
-		const metaURI = await valist.writeFolder(globFiles(files, followSymbolicLinks));
+		const metaURI = await client.writeFolder(globFiles(files, followSymbolicLinks));
 		core.info(`release URI ${metaURI}`);
 		
 		const release = new ReleaseMeta();
@@ -32,7 +32,7 @@ async function run(): Promise<void> {
 		release.description = core.getInput('description');
 
 		core.info('publishing release...');
-		const tx = await valist.createRelease(accountName, projectName, releaseName, release);
+		const tx = await client.createRelease(projectID, releaseName, release);
 		core.info(`transaction hash ${tx}`);
 		tx.wait();
 	} catch (err: any) {
