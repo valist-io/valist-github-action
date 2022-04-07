@@ -30,6 +30,9 @@ inputs:
   description:
     description: 'Release description'
     required: false
+  rpc-url:
+    description: 'Ethereum RPC URL'
+    default: 'https://rpc.valist.io'
 
 runs:
   using: 'node16'

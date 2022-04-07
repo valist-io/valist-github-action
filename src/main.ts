@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as glob from '@actions/glob';
 import * as fs from 'fs';
 import { ethers } from 'ethers';
-import { createClient, ReleaseMeta, generateID } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
+import { createWeb3, ReleaseMeta, generateID } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
 
 const Web3HttpProvider = require('web3-providers-http');
 
@@ -14,12 +14,16 @@ async function run(): Promise<void> {
 		const privateKey = core.getInput('private-key', { required: true });
 		const files = core.getInput('files', { required: true });
 		const followSymbolicLinks = core.getBooleanInput('follow-symbolic-links');
+		const rpcURL = core.getInput('rpc-url');
 
-		const web3 = new Web3HttpProvider('https://rpc.valist.io/mumbai');
+		const web3 = new Web3HttpProvider(rpcURL);
 		const wallet = new ethers.Wallet(privateKey);
-		const client = await createClient(web3, wallet);
+		const client = await createWeb3(web3, wallet);
 
-		const accountID = generateID(80001, accountName);
+		const provider = new ethers.providers.Web3Provider(web3);
+		const { chainId } = await provider.getNetwork();
+
+		const accountID = generateID(chainId, accountName);
 		const projectID = generateID(accountID, projectName);
 
 		core.info('uploading files...');
