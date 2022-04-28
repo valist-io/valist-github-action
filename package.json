@@ -19,6 +19,7 @@
   "dependencies": {
     "@actions/core": "^1.6.0",
     "@actions/glob": "^0.2.1",
+    "@valist/sdk": "^2.1.0-rc.1",
     "ethers": "^5.6.2",
     "web3-providers-http": "^1.7.1"
   },

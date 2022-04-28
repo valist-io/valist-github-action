@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as glob from '@actions/glob';
 import * as fs from 'fs';
 import { ethers } from 'ethers';
-import { createWeb3, ReleaseMeta, generateID } from '../../valist-meta/valist-js/packages/valist-sdk/dist';
+import { create, ReleaseMeta, generateID } from '@valist/sdk';
 
 const Web3HttpProvider = require('web3-providers-http');
 
@@ -18,7 +18,7 @@ async function run(): Promise<void> {
 
 		const web3 = new Web3HttpProvider(rpcURL);
 		const wallet = new ethers.Wallet(privateKey);
-		const client = await createWeb3(web3, wallet);
+		const client = await create(web3, { wallet });
 
 		const provider = new ethers.providers.Web3Provider(web3);
 		const { chainId } = await provider.getNetwork();
