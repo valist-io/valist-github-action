@@ -33,6 +33,9 @@ inputs:
   rpc-url:
     description: 'Ethereum RPC URL'
     default: 'https://rpc.valist.io'
+  meta-tx:
+    description: 'Enable meta transactions'
+    default: true
 
 runs:
   using: 'node16'
