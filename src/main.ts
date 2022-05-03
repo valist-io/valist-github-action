@@ -20,12 +20,12 @@ async function run(): Promise<void> {
 		const metaTx = core.getBooleanInput('meta-tx');
 
 		const web3 = new Web3HttpProvider(rpcURL);
-		const wallet = new ethers.Wallet(privateKey);
-		const client = await create(web3, { wallet, metaTx });
-
 		const provider = new ethers.providers.Web3Provider(web3);
-		const { chainId } = await provider.getNetwork();
 
+		const wallet = new ethers.Wallet(privateKey);
+		const client = await create(provider, { wallet, metaTx });
+
+		const { chainId } = await provider.getNetwork();
 		const accountID = generateID(chainId, accountName);
 		const projectID = generateID(accountID, projectName);
 
