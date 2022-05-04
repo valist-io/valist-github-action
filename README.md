@@ -28,8 +28,8 @@ jobs:
       - uses: valist-io/valist-github-action@v2.1.0
         with:
           private-key: ${{ secrets.PRIVATE_KEY }}
-          account: nasdf
-          project: ipfs
+          account: acme-co
+          project: example
           release: ${{ env.TIMESTAMP }}
           files: '**'
 ```
