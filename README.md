@@ -6,7 +6,7 @@ GitHub Action for publishing releases on Valist.
 
 ### Inputs
 
-- `private-key` (required) Account private key.
+- `private-key` (required) Project private key. Recommended to generate a fresh key and add it to a Project. 
 - `account` (required) Valist account name.
 - `project` (required) Valist project name.
 - `release` (required) Valist release name.
