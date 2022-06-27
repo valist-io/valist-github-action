@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
 import * as fs from 'fs';
 import { ethers } from 'ethers';
-//ipfs-utils/src/files/glob-source.js
 import globSource from 'ipfs-utils/src/files/glob-source.js';
 import { 
   create,
@@ -68,12 +67,11 @@ async function run(): Promise<void> {
       const archiveURL = archiveSource(source);
       release.source = await client.writeFile(archiveURL);
     }
-    core.info(`release ${release}`);
 
     core.info('publishing release...');
     const tx = await client.createRelease(projectID, releaseName, release);
     
-    core.info(`transaction ${tx}`);
+    core.info(`transaction hash ${tx.hash}`);
     await tx.wait();
   } catch (err: any) {
     core.setFailed(`${err}`);
@@ -85,7 +83,7 @@ async function getFiles(path: string, hidden: boolean) {
   if (stat.isDirectory()) {
     return globSource(path, '**/*', { hidden });
   }
-  
+
   if (!stat.isFile()) {
     throw new Error('invalid file path');
   }
