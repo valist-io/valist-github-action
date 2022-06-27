@@ -18,12 +18,12 @@ inputs:
   release:
     description: 'Valist release name'
     required: true
-  files:
-    description: 'Files to publish'
+  path:
+    description: 'Path to file or folder containing release artifacts'
     required: true
-  follow-symbolic-links:
-    description: 'Follow symbolic links'
-    default: true
+  include-dot-files:
+    description: 'Include hidden dot files'
+    default: false
   image:
     description: 'Release image URI'
     required: false
