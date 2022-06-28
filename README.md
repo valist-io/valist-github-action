@@ -9,7 +9,7 @@ GitHub Action for publishing releases on Valist.
 - `account` Valist account name.
 - `project` Valist project name.
 - `release` Valist release name. Must be unique within a project.
-- `path` Path to file or folder containing release artifacts.
+- `path` Path to artifact file or folder.
 - `private-key` Project private key. Recommended to generate a fresh key and add it to a Project.
 - `include-dot-files` Include hidden dot files (defaults to false).
 

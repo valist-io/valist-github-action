@@ -19,7 +19,7 @@ inputs:
     description: 'Valist release name'
     required: true
   path:
-    description: 'Path to file or folder containing release artifacts'
+    description: 'Path to artifact file or directory'
     required: true
   include-dot-files:
     description: 'Include hidden dot files'
