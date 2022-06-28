@@ -55,13 +55,21 @@ async function run(): Promise<void> {
 
     core.info('uploading files...');
     // upload release assets
-    const files = await getFiles(path, hidden);
-    release.external_url = await client.writeFolder(files);
+    const stat = await fs.promises.stat(path);
+    if (stat.isDirectory()) { 
+      const artifact = globSource(path, '**/*', { hidden });
+      release.external_url = await client.writeFolder(artifact);
+    } else {
+      const artifact = fs.createReadStream(path);
+      release.external_url = await client.writeFile(artifact);
+    }
+
     // upload release image
     if (image) {
       const imageFile = fs.createReadStream(image);
       release.image = await client.writeFile(imageFile);
     }
+
     // upload source snapshot
     if (source) {
       const archiveURL = archiveSource(source);
@@ -76,24 +84,6 @@ async function run(): Promise<void> {
   } catch (err: any) {
     core.setFailed(`${err}`);
   }
-}
-
-async function getFiles(path: string, hidden: boolean) {
-  const stat = await fs.promises.stat(path);
-  if (stat.isDirectory()) {
-    return globSource(path, '**/*', { hidden });
-  }
-
-  if (!stat.isFile()) {
-    throw new Error('invalid file path');
-  }
-
-  return [{
-    path: path,
-    content: fs.createReadStream(path),
-    mode: stat.mode,
-    mtime: stat.mtime,
-  }];
 }
 
 run();
