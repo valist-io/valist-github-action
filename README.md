@@ -6,19 +6,30 @@ GitHub Action for publishing releases on Valist.
 
 ### Inputs
 
-- `private-key` (required) Project private key. Recommended to generate a fresh key and add it to a Project. 
-- `account` (required) Valist account name.
-- `project` (required) Valist project name.
-- `release` (required) Valist release name.
-- `files` (required) Files to publish. [Supports glob patterns](https://github.com/actions/toolkit/tree/main/packages/glob#patterns).
-- `follow-symbolic-links` Follow symbolic links (defaults to true).
+- `account` Valist account name.
+- `project` Valist project name.
+- `release` Valist release name. Must be unique within a project.
+- `path` Path to artifact file or folder.
+- `private-key` Project private key. Recommended to generate a fresh key and add it to a Project.
+- `include-dot-files` Include hidden dot files (defaults to false).
+
+#### Metadata (Optional)
+
 - `image` Path to release image.
 - `description` Release description.
 - `source` Source code archive URL.
   - `github.com/<owner>/<repo>/<ref>`
   - `gitlab.com/<owner>/<repo>/<ref>`
+
+#### Valist Client (Optional)
+
 - `rpc-url` Ethereum RPC URL (defaults to Polygon Mainnet).
 - `meta-tx` Enable gasless meta transactions (defaults to true).
+
+#### Multi Platform Install (Optional)
+
+Use these inputs to configure multi platform binaries.
+
 - `install-name` Binary name when installing.
 - `install-darwin-amd64` Path to darwin/amd64 binary in release.
 - `install-darwin-arm64` Path to darwin/arm64 binary in release.
@@ -36,14 +47,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "TIMESTAMP=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
       - uses: valist-io/valist-github-action@v2.2.0
         with:
           private-key: ${{ secrets.PRIVATE_KEY }}
           account: acme-co
           project: example
-          release: ${{ env.TIMESTAMP }}
-          files: '**'
+          release: github-action-${{ env.GITHUB_RUN_ID }}
+          path: './build'
 ```
 
 ## Contributing
