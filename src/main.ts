@@ -37,6 +37,11 @@ async function run(): Promise<void> {
     const accountID = generateID(chainId, accountName);
     const projectID = generateID(accountID, projectName);
 
+    if (!(await client.isProjectMember(projectID, wallet.address))) {
+      core.error(`this key does not have access to ${accountName}/${projectName}`)
+      core.setFailed(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/edit/project?account=${accountName}&project=${projectName}`);
+    }
+
     const install = new InstallMeta();
     install.name = core.getInput('install-name');
     install.darwin_amd64 = core.getInput('install-darwin-amd64');
@@ -63,6 +68,7 @@ async function run(): Promise<void> {
       const artifact = fs.createReadStream(path);
       release.external_url = await client.writeFile(artifact);
     }
+    core.info(`successfully uploaded files to IPFS: ${release.external_url}`);
 
     // upload release image
     if (image) {
