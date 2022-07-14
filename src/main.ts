@@ -39,7 +39,7 @@ async function run(): Promise<void> {
 
     if (!(await client.isProjectMember(projectID, wallet.address))) {
       core.error(`this key does not have access to ${accountName}/${projectName}`)
-      return core.setFailed(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/edit/project?account=${accountName}&project=${projectName}`);
+      throw new Error(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/edit/project?account=${accountName}&project=${projectName}`);
     }
 
     const install = new InstallMeta();
