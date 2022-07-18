@@ -36,6 +36,20 @@ async function run(): Promise<void> {
     const { chainId } = await provider.getNetwork();
     const accountID = generateID(chainId, accountName);
     const projectID = generateID(accountID, projectName);
+    const releaseID = generateID(projectID, releaseName);
+
+    const isAccountMember = await client.isAccountMember(accountID, wallet.address);
+    const isProjectMember = await client.isProjectMember(projectID, wallet.address);
+
+    if (!isAccountMember || !isProjectMember) {
+      core.error(`this key does not have access to ${accountName}/${projectName}`)
+      throw new Error(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/edit/project?account=${accountName}&project=${projectName}`);
+    }
+
+    const releaseExists = await client.releaseExists(releaseID);
+    if (releaseExists) {
+      throw new Error(`release ${releaseName} exists!`);
+    }
 
     const install = new InstallMeta();
     install.name = core.getInput('install-name');
@@ -63,6 +77,7 @@ async function run(): Promise<void> {
       const artifact = fs.createReadStream(path);
       release.external_url = await client.writeFile(artifact);
     }
+    core.info(`successfully uploaded files to IPFS: ${release.external_url}`);
 
     // upload release image
     if (image) {
