@@ -41,7 +41,7 @@ async function run(): Promise<void> {
     const isAccountMember = await client.isAccountMember(accountID, wallet.address);
     const isProjectMember = await client.isProjectMember(projectID, wallet.address);
 
-    if (!isAccountMember || !isProjectMember) {
+    if (!(isAccountMember || isProjectMember)) {
       core.error(`this key does not have access to ${accountName}/${projectName}`)
       throw new Error(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/edit/project?account=${accountName}&project=${projectName}`);
     }
