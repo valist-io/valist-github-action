@@ -11,15 +11,11 @@ GitHub Action for publishing releases on Valist.
 - `release` Valist release name. Must be unique within a project.
 - `path` Path to artifact file or folder.
 - `private-key` Project private key. Recommended to generate a fresh key and add it to a Project.
-- `include-dot-files` Include hidden dot files (defaults to false).
 
 #### Metadata (Optional)
 
 - `image` Path to release image.
 - `description` Release description.
-- `source` Source code archive URL.
-  - `github.com/<owner>/<repo>/<ref>`
-  - `gitlab.com/<owner>/<repo>/<ref>`
 
 #### Valist Client (Optional)
 
