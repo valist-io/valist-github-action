@@ -1,13 +1,12 @@
 import * as core from '@actions/core';
-import * as fs from 'fs';
 import { ethers } from 'ethers';
-import globSource from 'ipfs-utils/src/files/glob-source.js';
 import { 
   create,
-  archiveSource,
+  // archiveSource,
   ReleaseMeta,
   InstallMeta,
-  generateID
+  generateID,
+  getFilesFromPath
 } from '@valist/sdk';
 
 const Web3HttpProvider = require('web3-providers-http');
@@ -69,27 +68,21 @@ async function run(): Promise<void> {
 
     core.info('uploading files...');
     // upload release assets
-    const stat = await fs.promises.stat(path);
-    if (stat.isDirectory()) { 
-      const artifact = globSource(path, '**/*', { hidden });
-      release.external_url = await client.writeFolder(artifact);
-    } else {
-      const artifact = fs.createReadStream(path);
-      release.external_url = await client.writeFile(artifact);
-    }
+    const artifacts = await getFilesFromPath(path);
+    release.external_url = await client.writeFolder(artifacts);
     core.info(`successfully uploaded files to IPFS: ${release.external_url}`);
 
     // upload release image
     if (image) {
-      const imageFile = fs.createReadStream(image);
-      release.image = await client.writeFile(imageFile);
+      const imageFile = await getFilesFromPath(image);
+      release.image = await client.writeFile(imageFile[0]);
     }
 
     // upload source snapshot
-    if (source) {
-      const archiveURL = archiveSource(source);
-      release.source = await client.writeFile(archiveURL);
-    }
+    // if (source) {
+    //   const archiveURL = archiveSource(source);
+    //   release.source = await client.writeFile(archiveURL);
+    // }
 
     core.info('publishing release...');
     const tx = await client.createRelease(projectID, releaseName, release);
