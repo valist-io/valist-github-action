@@ -20,8 +20,8 @@ async function run(): Promise<void> {
     const path = core.getInput('path', { required: true });
 
     const image = core.getInput('image');
-    const source = core.getInput('source');
-    const hidden = core.getBooleanInput('include-dot-files');
+    // const source = core.getInput('source');
+    // const hidden = core.getBooleanInput('include-dot-files');
 
     const rpcURL = core.getInput('rpc-url');
     const metaTx = core.getBooleanInput('meta-tx');
