@@ -42,7 +42,7 @@ async function run(): Promise<void> {
 
     if (!(isAccountMember || isProjectMember)) {
       core.error(`this key does not have access to ${accountName}/${projectName}`)
-      throw new Error(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/edit/project?account=${accountName}&project=${projectName}`);
+      throw new Error(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/-/account/${accountName}/project/${projectName}/settings`);
     }
 
     const releaseExists = await client.releaseExists(releaseID);
@@ -86,9 +86,15 @@ async function run(): Promise<void> {
 
     core.info('publishing release...');
     const tx = await client.createRelease(projectID, releaseName, release);
-    
+
     core.info(`transaction hash ${tx.hash}`);
     await tx.wait();
+
+    core.info(`view the release at:
+    https://app.valist.io/${accountName}/${projectName}/${releaseName}
+    ${release.external_url}
+    ipfs://${release.external_url.replace('https://gateway.valist.io/ipfs/', '')}
+    `)
   } catch (err: any) {
     core.setFailed(`${err}`);
   }
