@@ -47,7 +47,9 @@ async function run(): Promise<void> {
 
     const releaseExists = await client.releaseExists(releaseID);
     if (releaseExists) {
-      console.log(`release ${releaseName} exists!`);
+      const message = `release ${releaseName} exists! skipping publish.`;
+      core.warning(message);
+      console.warn(message);
       return;
     }
 
