@@ -47,7 +47,8 @@ async function run(): Promise<void> {
 
     const releaseExists = await client.releaseExists(releaseID);
     if (releaseExists) {
-      throw new Error(`release ${releaseName} exists!`);
+      console.log(`release ${releaseName} exists!`);
+      return;
     }
 
     const install = new InstallMeta();
