@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import { ethers } from 'ethers';
-import { 
+import {
   create,
   // archiveSource,
   ReleaseMeta,
@@ -55,6 +55,7 @@ async function run(): Promise<void> {
 
     const install = new InstallMeta();
     install.name = core.getInput('install-name');
+    install.android_arm64 = core.getInput('install-android-arm64');
     install.darwin_amd64 = core.getInput('install-darwin-amd64');
     install.darwin_arm64 = core.getInput('install-darwin-arm64');
     install.linux_386 = core.getInput('install-linux-386');
@@ -63,7 +64,7 @@ async function run(): Promise<void> {
     install.linux_arm64 = core.getInput('install-linux-arm64');
     install.windows_386 = core.getInput('install-windows-386');
     install.windows_amd64 = core.getInput('install-windows-amd64');
-    
+
     const release = new ReleaseMeta();
     release.name = releaseName;
     release.description = core.getInput('description');
