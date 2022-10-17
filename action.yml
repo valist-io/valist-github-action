@@ -1,72 +1,75 @@
-name: 'Valist Action'
-description: 'GitHub Action for publishing to Valist'
-author: 'valist-io'
+name: "Valist Action"
+description: "GitHub Action for publishing to Valist"
+author: "valist-io"
 branding:
-  icon: 'package'
-  color: 'purple'
+  icon: "package"
+  color: "purple"
 
 inputs:
   private-key:
-    description: 'Account private key'
+    description: "Account private key"
     required: true
   account:
-    description: 'Valist account name'
+    description: "Valist account name"
     required: true
   project:
-    description: 'Valist project name'
+    description: "Valist project name"
     required: true
   release:
-    description: 'Valist release name'
+    description: "Valist release name"
     required: true
   path:
-    description: 'Path to artifact file or directory'
+    description: "Path to artifact file or directory"
     required: true
   include-dot-files:
-    description: 'Include hidden dot files'
+    description: "Include hidden dot files"
     default: false
   image:
-    description: 'Release image URI'
+    description: "Release image URI"
     required: false
   description:
-    description: 'Release description'
+    description: "Release description"
     required: false
   source:
-    description: 'Source code archive URL'
+    description: "Source code archive URL"
     required: false
   rpc-url:
-    description: 'Ethereum RPC URL'
-    default: 'https://rpc.valist.io'
+    description: "Ethereum RPC URL"
+    default: "https://rpc.valist.io"
   meta-tx:
-    description: 'Enable meta transactions'
+    description: "Enable meta transactions"
     default: true
   install-name:
-    description: 'Binary name when installing'
+    description: "Binary name when installing"
+    required: false
+  install-android-arm64:
+    description: "Path to android/arm64 binary in release"
     required: false
   install-darwin-amd64:
-    description: 'Path to darwin/amd64 binary in release'
+    description: "Path to darwin/amd64 binary in release"
     required: false
   install-darwin-arm64:
-    description: 'Path to darwin/arm64 binary in release'
+    description: "Path to darwin/arm64 binary in release"
     required: false
   install-linux-386:
-    description: 'Path to linux/386 binary in release'
+    description: "Path to linux/386 binary in release"
     required: false
   install-linux-amd64:
-    description: 'Path to linux/amd64 binary in release'
+    description: "Path to linux/amd64 binary in release"
     required: false
   install-linux-arm:
-    description: 'Path to linux/arm binary in release'
+    description: "Path to linux/arm binary in release"
     required: false
   install-linux-arm64:
-    description: 'Path to linux/arm64 binary in release'
+    description: "Path to linux/arm64 binary in release"
     required: false
   install-windows-386:
-    description: 'Path to windows/386 binary in release'
+    description: "Path to windows/386 binary in release"
     required: false
   install-windows-amd64:
-    description: 'Path to windows/amd64 binary in release'
+    description: "Path to windows/amd64 binary in release"
     required: false
 
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"
