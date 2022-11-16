@@ -18,53 +18,38 @@ inputs:
   release:
     description: 'Valist release name'
     required: true
-  path:
-    description: 'Path to artifact file or directory'
-    required: true
-  include-dot-files:
-    description: 'Include hidden dot files'
-    default: false
   image:
     description: 'Release image URI'
     required: false
   description:
     description: 'Release description'
     required: false
-  source:
-    description: 'Source code archive URL'
-    required: false
   rpc-url:
-    description: 'Ethereum RPC URL'
+    description: 'Polygon RPC URL'
     default: 'https://rpc.valist.io'
   meta-tx:
     description: 'Enable meta transactions'
-    default: true
-  install-name:
-    description: 'Binary name when installing'
-    required: false
-  install-darwin-amd64:
+    default: 'true'
+  platform-web:
     description: 'Path to darwin/amd64 binary in release'
     required: false
-  install-darwin-arm64:
+  platform-darwin-amd64:
+    description: 'Path to darwin/amd64 binary in release'
+    required: false
+  platform-darwin-arm64:
     description: 'Path to darwin/arm64 binary in release'
     required: false
-  install-linux-386:
-    description: 'Path to linux/386 binary in release'
-    required: false
-  install-linux-amd64:
+  platform-linux-amd64:
     description: 'Path to linux/amd64 binary in release'
     required: false
-  install-linux-arm:
-    description: 'Path to linux/arm binary in release'
-    required: false
-  install-linux-arm64:
+  platform-linux-arm64:
     description: 'Path to linux/arm64 binary in release'
     required: false
-  install-windows-386:
-    description: 'Path to windows/386 binary in release'
-    required: false
-  install-windows-amd64:
+  platform-windows-amd64:
     description: 'Path to windows/amd64 binary in release'
+    required: false
+  platform-android-arm64:
+    description: 'Path to android/arm64 APK in release'
     required: false
 
 runs:
