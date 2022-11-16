@@ -1,28 +1,28 @@
-name: 'Valist Action'
-description: 'GitHub Action for publishing to Valist'
-author: 'valist-io'
+name: "Valist Action"
+description: "GitHub Action for publishing to Valist"
+author: "valist-io"
 branding:
-  icon: 'package'
-  color: 'purple'
+  icon: "package"
+  color: "purple"
 
 inputs:
   private-key:
-    description: 'Account private key'
+    description: "Account private key"
     required: true
   account:
-    description: 'Valist account name'
+    description: "Valist account name"
     required: true
   project:
-    description: 'Valist project name'
+    description: "Valist project name"
     required: true
   release:
-    description: 'Valist release name'
+    description: "Valist release name"
     required: true
   image:
-    description: 'Release image URI'
+    description: "Release image URI"
     required: false
   description:
-    description: 'Release description'
+    description: "Release description"
     required: false
   rpc-url:
     description: 'Polygon RPC URL'
@@ -53,5 +53,5 @@ inputs:
     required: false
 
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"

@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import { ethers } from 'ethers';
-import { 
+import {
   create,
   generateID,
   ReleaseConfig,
@@ -59,7 +59,7 @@ async function run(): Promise<void> {
     config.platforms.android_arm64 = core.getInput('platform-android-arm64');
 
     core.info('uploading files...');
-    
+
     const release = await client.uploadRelease(config);
 
     core.info('publishing release...');
