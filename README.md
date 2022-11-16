@@ -9,8 +9,21 @@ GitHub Action for publishing releases on Valist.
 - `account` Valist account name.
 - `project` Valist project name.
 - `release` Valist release name. Must be unique within a project.
-- `path` Path to artifact file or folder.
 - `private-key` Project private key. Recommended to generate a fresh key and add it to a Project.
+
+#### Configuring Platforms
+
+Use these inputs to configure multi platform releases. At least one is required.
+
+- `platform-web` Path to web build folder in a release. Can be build output from Next.js, Create React App, or other static web frameworks.
+- `platform-darwin-amd64` Path to darwin/amd64 binary in release.
+- `platform-darwin-arm64` Path to darwin/arm64 binary in release.
+- `platform-linux-386` Path to linux/386 binary in release.
+- `platform-linux-amd64` Path to linux/amd64 binary in release.
+- `platform-linux-arm` Path to linux/arm binary in release.
+- `platform-linux-arm64` Path to linux/arm64 binary in release.
+- `platform-windows-386` Path to windows/386 binary in release.
+- `platform-windows-amd64` Path to windows/amd64 binary in release.
 
 #### Metadata (Optional)
 
@@ -21,20 +34,6 @@ GitHub Action for publishing releases on Valist.
 
 - `rpc-url` Ethereum RPC URL (defaults to Polygon Mainnet).
 - `meta-tx` Enable gasless meta transactions (defaults to true).
-
-#### Multi Platform Install (Optional)
-
-Use these inputs to configure multi platform binaries.
-
-- `install-name` Binary name when installing.
-- `install-darwin-amd64` Path to darwin/amd64 binary in release.
-- `install-darwin-arm64` Path to darwin/arm64 binary in release.
-- `install-linux-386` Path to linux/386 binary in release.
-- `install-linux-amd64` Path to linux/amd64 binary in release.
-- `install-linux-arm` Path to linux/arm binary in release.
-- `install-linux-arm64` Path to linux/arm64 binary in release.
-- `install-windows-386` Path to windows/386 binary in release.
-- `install-windows-amd64` Path to windows/amd64 binary in release.
 
 ### Example
 
@@ -49,7 +48,10 @@ jobs:
           account: acme-co
           project: example
           release: github-action-${{ env.GITHUB_RUN_ID }}
-          path: './build'
+          
+          platform-web: out
+
+
 ```
 
 ## Contributing

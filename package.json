@@ -17,15 +17,15 @@
   },
   "homepage": "https://github.com/valist-io/valist-github-action#readme",
   "dependencies": {
-    "@actions/core": "^1.6.0",
-    "@valist/sdk": "^2.5.6",
-    "ethers": "^5.6.2",
+    "@actions/core": "^1.10.0",
+    "@valist/sdk": "^2.6.1",
+    "ethers": "^5.7.2",
     "ipfs-utils": "^9.0.7",
-    "web3-providers-http": "^1.7.1"
+    "web3-providers-http": "^1.8.1"
   },
   "devDependencies": {
-    "@types/node": "^17.0.23",
-    "@vercel/ncc": "^0.33.3",
-    "typescript": "^4.6.2"
+    "@types/node": "^18.11.9",
+    "@vercel/ncc": "^0.34.0",
+    "typescript": "^4.9.3"
   }
 }
