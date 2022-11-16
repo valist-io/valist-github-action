@@ -31,7 +31,7 @@ inputs:
     description: 'Enable meta transactions'
     default: 'true'
   platform-web:
-    description: 'Path to darwin/amd64 binary in release'
+    description: 'Path to web bundle release. Can be build output from Next.js, CRA, or other static web frameworks.'
     required: false
   platform-darwin-amd64:
     description: 'Path to darwin/amd64 binary in release'
