@@ -8,7 +8,7 @@ import {
 
 const Web3HttpProvider = require('web3-providers-http');
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     const accountName = core.getInput('account', { required: true });
     const projectName = core.getInput('project', { required: true });
