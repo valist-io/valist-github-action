@@ -6,8 +6,6 @@ import {
   ReleaseConfig,
 } from '@valist/sdk';
 
-const Web3HttpProvider = require('web3-providers-http');
-
 async function run(): Promise<void> {
   try {
     const accountName = core.getInput('account', { required: true });
@@ -18,23 +16,24 @@ async function run(): Promise<void> {
     const rpcURL = core.getInput('rpc-url');
     const metaTx = core.getBooleanInput('meta-tx');
 
-    const web3 = new Web3HttpProvider(rpcURL);
-    const provider = new ethers.providers.Web3Provider(web3);
+    const rpc = new ethers.providers.JsonRpcProvider(rpcURL);
+    const signer: ethers.Signer = new ethers.Wallet(privateKey, rpc);
 
-    const wallet = new ethers.Wallet(privateKey);
-    const client = await create(provider, { wallet, metaTx });
+    const address = await signer.getAddress();
 
-    const { chainId } = await provider.getNetwork();
+    const client = await create(signer, { metaTx });
+
+    const { chainId } = await (signer.provider as ethers.providers.Provider).getNetwork();
     const accountID = generateID(chainId, accountName);
     const projectID = generateID(accountID, projectName);
     const releaseID = generateID(projectID, releaseName);
 
-    const isAccountMember = await client.isAccountMember(accountID, wallet.address);
-    const isProjectMember = await client.isProjectMember(projectID, wallet.address);
+    const isAccountMember = await client.isAccountMember(accountID, address);
+    const isProjectMember = await client.isProjectMember(projectID, address);
 
     if (!(isAccountMember || isProjectMember)) {
       core.error(`this key does not have access to ${accountName}/${projectName}`)
-      throw new Error(`please add the ${wallet.address} address to the project settings at: https://app.valist.io/-/account/${accountName}/project/${projectName}/settings`);
+      throw new Error(`please add the ${address} address to the project settings at: https://app.valist.io/-/account/${accountName}/project/${projectName}/settings`);
     }
 
     const releaseExists = await client.releaseExists(releaseID);
