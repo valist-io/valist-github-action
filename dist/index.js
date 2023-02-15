@@ -27816,8 +27816,10 @@ class Client {
                 Object.keys(filesObject).forEach((platform) => {
                     if (release.platforms && filesObject[platform] && filesObject[platform].length !== 0) {
                         const fileName = path_1.default.basename((filesObject[platform][0].name)); // @TODO make this work with folders
+                        let url = new URL(nativeCID);
+                        url.pathname = path_1.default.join(url.pathname, platform, fileName);
                         release.platforms[platform] = {
-                            external_url: path_1.default.join(nativeCID, platform, fileName),
+                            external_url: url.toString(),
                             name: fileName,
                         };
                     }
@@ -28179,6 +28181,7 @@ class Client {
             const res = yield this.ipfs.add(fileData, {
                 wrapWithDirectory,
                 cidVersion: 1,
+                progress: (bytes) => onProgress ? onProgress((0, utils_1.formatBytes)(String(bytes))) : '',
             });
             return `${this.ipfsGateway}/ipfs/${res.cid.toString()}`;
         });
@@ -28193,6 +28196,7 @@ class Client {
                 for (var _b = __asyncValues(this.ipfs.addAll(files, {
                     cidVersion: 1,
                     wrapWithDirectory,
+                    progress: (bytes, path) => onProgress ? onProgress(`${path ? `(${path})  ` : ''}${(0, utils_1.formatBytes)(String(bytes))}`) : '',
                 })), _c; _c = yield _b.next(), !_c.done;) {
                     const res = _c.value;
                     cids.push(res.cid.toString());
@@ -28776,8 +28780,7 @@ function createReadOnly(provider, options) {
     const licenseAddress = options.licenseAddress || contracts.getLicenseAddress(chainId);
     const registry = new ethers_1.ethers.Contract(registryAddress, contracts.registryABI, provider);
     const license = new ethers_1.ethers.Contract(licenseAddress, contracts.licenseABI, provider);
-    // @ts-expect-error
-    const ipfs = (0, ipfs_http_client_1.create)(options.ipfsHost || 'https://pin-infura.valist.io');
+    const ipfs = (0, ipfs_http_client_1.create)({ url: options.ipfsHost || 'https://pin-1.valist.io/api/v0' });
     const ipfsGateway = options.ipfsGateway || 'https://gateway.valist.io';
     return new client_1.default(registry, license, ipfs, ipfsGateway, subgraphUrl, undefined, false);
 }
@@ -28812,9 +28815,18 @@ function create(providerOrSigner, options) {
         const registryAddress = options.registryAddress || contracts.getRegistryAddress(options.chainId || 137);
         const licenseAddress = options.licenseAddress || contracts.getLicenseAddress(options.chainId || 137);
         const registry = new ethers_1.ethers.Contract(registryAddress, contracts.registryABI, provider);
-        const license = new ethers_1.ethers.Contract(licenseAddress, contracts.licenseABI, provider);
-        // @ts-expect-error
-        const ipfs = (0, ipfs_http_client_1.create)(options.ipfsHost || 'https://pin-infura.valist.io');
+        const license = new ethers_1.ethers.Contract(licenseAddress, contracts.licenseABI, signer);
+        let ipfsConfig = {
+            url: options.ipfsHost || 'https://pin-1.valist.io/api/v0',
+        };
+        // if in Node.js environment, disable connection keepAlive due to:
+        // https://github.com/ipfs/kubo/issues/6402
+        // https://github.com/ipfs/go-ipfs-cmds/pull/116
+        // https://github.com/ipfs/kubo/issues/5168#issuecomment-402806747
+        if (typeof window === 'undefined') {
+            ipfsConfig.agent = (__nccwpck_require__(95687).Agent)({ keepAlive: false });
+        }
+        const ipfs = (0, ipfs_http_client_1.create)(ipfsConfig);
         const ipfsGateway = options.ipfsGateway || 'https://gateway.valist.io';
         return new client_1.default(registry, license, ipfs, ipfsGateway, subgraphUrl, signer, options.metaTx);
     });
@@ -28941,7 +28953,7 @@ exports.sendMetaTx = sendMetaTx;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ReleaseConfig = exports.isReleaseMetaV2 = exports.isReleaseMetaV1 = exports.InstallMeta = exports.ReleaseMetaV1 = exports.PlatformsMeta = exports.platformNames = exports.supportedPlatforms = exports.ReleaseMeta = exports.GalleryMeta = exports.ProjectMeta = exports.AccountMeta = void 0;
+exports.ReleaseConfig = exports.isReleaseMetaV2 = exports.isReleaseMetaV1 = exports.InstallMeta = exports.ReleaseMetaV1 = exports.PlatformsMeta = exports.platformNames = exports.supportedPlatforms = exports.ReleaseMeta = exports.GalleryMeta = exports.NetworkMeta = exports.ProjectMeta = exports.AccountMeta = void 0;
 // Valist Types
 class AccountMeta {
 }
@@ -28949,6 +28961,9 @@ exports.AccountMeta = AccountMeta;
 class ProjectMeta {
 }
 exports.ProjectMeta = ProjectMeta;
+class NetworkMeta {
+}
+exports.NetworkMeta = NetworkMeta;
 class GalleryMeta {
     constructor() {
         this.name = '';
@@ -28995,10 +29010,11 @@ class ReleaseMeta {
     }
 }
 exports.ReleaseMeta = ReleaseMeta;
-exports.supportedPlatforms = ['web', 'darwin_amd64', 'darwin_arm64', 'linux_amd64', 'linux_arm64', 'windows_amd64', 'android_arm64'];
+exports.supportedPlatforms = ['web', 'darwin_amd64', 'darwin_arm64', 'linux_amd64', 'linux_arm64', 'windows_arm64', 'windows_amd64', 'android_arm64'];
 exports.platformNames = {
     "web": "Web build",
     "windows_amd64": "Windows (amd64 / Intel)",
+    "windows_arm64": "Windows (arm64)",
     "linux_amd64": "Linux (amd64 / Intel)",
     "linux_arm64": "Linux (arm64)",
     "darwin_arm64": "macOS (arm64 / Apple Silicon)",
@@ -29034,6 +29050,7 @@ class ReleaseConfig {
             darwin_amd64: '',
             darwin_arm64: '',
             windows_amd64: '',
+            windows_arm64: '',
             linux_amd64: '',
             linux_arm64: '',
             android_arm64: '',
@@ -29063,7 +29080,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.sendStats = exports.getStats = exports.toImportCandidate = exports.getFilesFromPath = exports.getReleaseID = exports.getProjectID = exports.getAccountID = exports.generateID = void 0;
+exports.sendStats = exports.getStats = exports.formatBytes = exports.toImportCandidate = exports.getFilesFromPath = exports.getReleaseID = exports.getProjectID = exports.getAccountID = exports.generateID = void 0;
 const ethers_1 = __nccwpck_require__(21238);
 const files_from_path_1 = __nccwpck_require__(85090);
 const axios_1 = __importDefault(__nccwpck_require__(88757));
@@ -29111,6 +29128,16 @@ const toImportCandidate = (file) => {
     };
 };
 exports.toImportCandidate = toImportCandidate;
+// thanks to https://stackoverflow.com/a/39906526
+const formatBytes = (x) => {
+    const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    let l = 0, n = parseInt(x, 10) || 0;
+    while (n >= 1024 && ++l) {
+        n = n / 1024;
+    }
+    return (n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l]);
+};
+exports.formatBytes = formatBytes;
 function getStats(projectPath) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
